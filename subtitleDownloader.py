@@ -26,30 +26,28 @@ def subGetter(filename):
         for videoExt in videoExtensions:
             filename = filename.replace(videoExt, "")
         if originalFileName == filename:
-            return "WTF! lulz!"
+            return "Not a media file."
 
         hash = get_hash(originalFileName)
-
         headers = { 'User-Agent' : 'SubDB/1.0 (subtitle-downloader/1.0; http://github.com/amanthedorkknight/subtitleDownloader)' }
-
         link = "http://api.thesubdb.com/?action=download&hash=" + hash + "&language=en"
-
         req = urllib.request.Request(link, None, headers)
         response = urllib.request.urlopen(req).read()
 
         with open (filename + ".srt", "wb") as subtitle:
             subtitle.write(response)
-            print("Did it! lulz! " + filename)
+            print("Success! " + filename)
 
     except:
-        print ("Couldn't do it! " + filename)
+        print ("Not found! " + filename)
 
-rootdir = "/media/aman/Aman/Movies"
+# Replace with the path to your movie directory        
+rootdir = "/home/aman/Downloads/"
+
 # Iterate the root directory recursively using os.walk and for each video file present get the subtitle
 for root, subFolders, files in os.walk(rootdir):
     for file in files:
         fname = os.path.join(root, file)
         subGetter(fname)
 
-print(subGetter(fname))
 
